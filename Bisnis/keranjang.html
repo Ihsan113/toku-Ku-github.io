@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Halaman Selanjutnya</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 16px;
+      margin: 0;
+      padding: 0px;
+    }
+
+    main {
+      padding: 0px;
+    }
+
+    .keranjang-detail {
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .produk-item {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      position: relative; /* Added position relative */
+    }
+
+    .produk-item img {
+      max-width: 100px;
+      max-height: 100px;
+      border-radius: 5px;
+    }
+
+    .quantity-buttons {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 10px; /* Adjusted margin-top */
+    }
+
+    .quantity-buttons button {
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    .quantity-info {
+      font-weight: bold;
+    }
+
+    .hapus-button {
+      background-color: #ff6347;
+      color: #fff;
+      padding: 5px 10px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+    }
+
+    #hapus-semua-button {
+      background-color: #ff6347;
+      color: #fff;
+      padding: 10px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+    
+    #checkout-button {
+  background-color: #28a745; /* Green background color */
+  color: #fff; /* White text color */
+  padding: 10px 15px; /* Adjust padding */
+  border: none; /* Remove border */
+  border-radius: 5px; /* Add border-radius for rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Add smooth transition effect */
+
+  /* Optional: Adjust other styles as needed */
+}
+
+#checkout-button:hover {
+  background-color: #218838; /* Darker green on hover */
+}
+
+#checkout-button i {
+  margin-right: 5px; /* Add spacing between icon and text */
+}
+
+.social-icons a {
+    color: #ffffff;
+    font-size: 24px;
+    margin: 0 10px;
+    text-decoration: none;
+}
+#back-link {
+    text-decoration: none;
+    color: black;
+    
+  </style>
+</head>
+<body>
+  <main>
+    <div class="keranjang-detail">
+        <a id="back-link" href="javascript:history.back()"><i class="fas fa-arrow-left"></i> Kembali</a>
+      <h2>Daftar Barang dalam Keranjang:</h2>
+      <div id="keranjang-list">
+        <!-- Daftar barang akan ditampilkan di sini -->
+      </div>
+      <p id="total-harga">Total Harga: Rp. 0</p>
+      <button id="hapus-semua-button" onclick="hapusSemua()">
+        <i class="fas fa-trash-alt"></i> Hapus Semua
+      </button>
+      
+      <button id="checkout-button" onclick="checkout()">
+  <i class="fas fa-arrow-right"></i> Checkout
+</button>
+    </div>
+  </main>
+
+ <!-- ... -->
+<script>
+  // Ambil data keranjang dari localStorage
+  let keranjang = JSON.parse(localStorage.getItem('keranjang')) || [];
+
+  // Tampilkan daftar barang di halaman
+  const keranjangList = document.getElementById('keranjang-list');
+  const totalHargaElement = document.getElementById('total-harga');
+  let totalHarga = 0;
+
+  function updateLocalStorage() {
+    localStorage.setItem('keranjang', JSON.stringify(keranjang));
+  }
+
+  function updateTotalHarga() {
+    totalHarga = keranjang.reduce((total, produk) => total + produk.harga, 0);
+    totalHargaElement.textContent = `Total Harga: Rp. ${totalHarga}`;
+  }
+
+  function renderKeranjang() {
+    keranjangList.innerHTML = ''; // Hapus konten sebelumnya
+
+    keranjang.forEach((produk, index) => {
+      if (!produk.jumlah) {
+        produk.jumlah = 1; // Inisialisasi jumlah jika belum ada
+      }
+
+      const produkItem = document.createElement('div');
+      produkItem.classList.add('produk-item');
+
+      const img = document.createElement('img');
+      img.src = produk.gambar; // Gunakan URL gambar dari objek produk
+      img.alt = produk.nama;
+
+      const listItem = document.createElement('p');
+      listItem.textContent = `${produk.nama} - Rp. ${produk.hargaSatuan}`;
+
+      const quantityContainer = document.createElement('div');
+      quantityContainer.classList.add('quantity-buttons');
+
+      const tambahButton = document.createElement('button');
+      tambahButton.textContent = '+';
+      tambahButton.addEventListener('click', () => {
+        produk.jumlah += 1; // Tambah jumlah
+        produk.harga = produk.hargaSatuan * produk.jumlah; // Hitung harga baru
+        updateLocalStorage();
+        updateTotalHarga();
+        renderKeranjang();
+      });
+
+      const kurangButton = document.createElement('button');
+      kurangButton.textContent = '-';
+      kurangButton.addEventListener('click', () => {
+        if (produk.jumlah > 1) {
+          produk.jumlah -= 1; // Kurangi jumlah
+          produk.harga = produk.hargaSatuan * produk.jumlah; // Hitung harga baru
+          updateLocalStorage();
+          updateTotalHarga();
+          renderKeranjang();
+        }
+      });
+
+      const quantityInfo = document.createElement('p');
+      quantityInfo.classList.add('quantity-info');
+      quantityInfo.textContent = `Jumlah: ${produk.jumlah}`;
+
+      const hapusButton = document.createElement('button');
+      hapusButton.classList.add('hapus-button');
+      hapusButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
+      hapusButton.addEventListener('click', () => {
+        keranjang.splice(index, 1);
+        updateLocalStorage();
+        updateTotalHarga();
+        renderKeranjang();
+      });
+
+      quantityContainer.appendChild(tambahButton);
+      quantityContainer.appendChild(quantityInfo);
+      quantityContainer.appendChild(kurangButton);
+
+      produkItem.appendChild(img);
+      produkItem.appendChild(listItem);
+      produkItem.appendChild(quantityContainer);
+      produkItem.appendChild(hapusButton);
+
+      keranjangList.appendChild(produkItem);
+    });
+
+    updateTotalHarga();
+  }
+
+  function hapusSemua() {
+    keranjang = [];
+    updateLocalStorage();
+    renderKeranjang();
+  }
+
+  renderKeranjang();
+  
+  function checkout() {
+    // Redirect to the next page (replace 'nextPage.html' with the actual page)
+    window.location.href = 'Pesan.html';
+  }
+</script>
+
+
+</body>
+</html>

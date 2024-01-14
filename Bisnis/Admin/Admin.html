@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Halaman Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 16px;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5; /* Light gray background */
+    }
+
+    .struk-container {
+      width: 300px;
+      margin: auto;
+      border: 2px solid #333; /* Dark border */
+      border-radius: 10px; /* Rounded corners */
+      padding: 20px;
+      text-align: center;
+      background-color: #fff; /* White background */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+      margin-bottom: 20px; /* Add margin between receipts */
+      position: relative; /* Enable relative positioning for the delete button container */
+    }
+
+    .judul {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333; /* Dark text color */
+      margin-bottom: 10px;
+    }
+
+    .detail-pesanan {
+      margin-top: 20px;
+    }
+
+    .detail-pesanan td {
+      text-align: left;
+      padding: 5px 0; /* Add padding for better spacing */
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-style: italic;
+      color: #777; /* Lighter text color */
+    }
+
+    .delete-button {
+      cursor: pointer;
+      color: #ff0000; /* Red color for delete button */
+      margin-top: 10px; /* Add margin between delete button and footer */
+    }
+  </style>
+</head>
+<body>
+    <center>
+<h1>Daftar Pesanan</h1>
+</center>
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-firestore.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDPp8I8Xp-qZg65GxEX8_ETxvrZCDG8454",
+      authDomain: "bisnis-532f5.firebaseapp.com",
+      projectId: "bisnis-532f5",
+      storageBucket: "bisnis-532f5.appspot.com",
+      messagingSenderId: "351800625123",
+      appId: "1:351800625123:web:8abff984b15be7a00bc2d6",
+      measurementId: "G-TJJBQ9TF7S"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const container = document.getElementById('receipts-container');
+      let receiptCounter = 0;
+
+      // Ambil data pesanan dari Firestore
+      db.collection('pemesanan').get()
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            const pesanan = doc.data();
+            const waktuPesananValue = new Date(pesanan.timestamp.seconds * 1000).toLocaleString();
+
+            const daftarBarangValue = pesanan.keranjang.map(produk => `${produk.nama} (${produk.jumlah} pcs)`).join(', ');
+
+            // Create a new receipt container for each order
+            const strukContainer = document.createElement('div');
+            strukContainer.className = 'struk-container';
+
+            // Increment the receipt counter
+            receiptCounter++;
+
+            // Populate the receipt content
+            strukContainer.innerHTML = `
+              <div class="judul">Toko Eti</div>
+              <div class="judul">Struk Pembelian ${receiptCounter}</div>
+              <div class="detail-pesanan">
+                <table>
+                  <tr>
+                    <td>Nama Pemesan:</td>
+                    <td>${pesanan.namaPemesan}</td>
+                  </tr>
+                  <tr>
+                    <td>Alamat:</td>
+                    <td>${pesanan.alamat.rt_rw}, ${pesanan.alamat.desa}, ${pesanan.alamat.kecamatan}, ${pesanan.alamat.kabupaten}, ${pesanan.alamat.provinsi}, ${pesanan.alamat.negara}</td>
+                  </tr>
+                  <tr>
+                    <td>Metode Pembayaran:</td>
+                    <td>${pesanan.metodePembayaran}</td>
+                  </tr>
+                  <tr>
+                    <td>Waktu Pesanan:</td>
+                    <td>${waktuPesananValue}</td>
+                  </tr>
+                  <tr>
+                    <td>Daftar Barang:</td>
+                    <td>${daftarBarangValue}</td>
+                  </tr>
+                  <tr>
+                    <td>Total Harga:</td>
+                    <td>${pesanan.totalHarga}</td>
+                  </tr>
+                </table>
+              </div>
+              <div class="footer">Terima Kasih atas Pembelian Anda!</div>
+              <div class="delete-button" onclick="deleteReceipt('${doc.id}')"><i class="fas fa-trash"></i> Hapus Struk</div>
+            `;
+
+            // Append the new receipt container to the main container
+            container.appendChild(strukContainer);
+          });
+        })
+        .catch(error => {
+          console.error('Error getting documents: ', error);
+        });
+    });
+
+    // Function to delete a receipt
+    function deleteReceipt(docId) {
+      // Hapus data dari Firebase Firestore
+      db.collection('pemesanan').doc(docId).delete()
+        .then(() => {
+          // Reload the page to reflect the changes
+          location.reload();
+        })
+        .catch(error => {
+          console.error('Error removing document: ', error);
+        });
+    }
+  </script>
+
+  <div id="receipts-container"></div>
+
+</body>
+</html>

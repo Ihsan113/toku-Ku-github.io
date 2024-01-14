@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-firestore.js"></script>
+
+  <!-- Firebase configuration -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDPp8I8Xp-qZg65GxEX8_ETxvrZCDG8454",
+      authDomain: "bisnis-532f5.firebaseapp.com",
+      projectId: "bisnis-532f5",
+      storageBucket: "bisnis-532f5.appspot.com",
+      messagingSenderId: "351800625123",
+      appId: "1:351800625123:web:8abff984b15be7a00bc2d6",
+      measurementId: "G-TJJBQ9TF7S"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    form {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+   
+    #notification {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      text-align: center;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: #fff;
+      z-index: 999;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Form Login -->
+  <form id="loginForm">
+    <h2>Login</h2>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" required>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" required>
+
+    <button type="button" onclick="login()">Login</button>
+    
+     <p>Belum punya akun ? klik untuk daftar. <a href="signup.html">Daftar</a></p>
+  </form>
+
+  <!-- Notification for login status -->
+  <div id="notification"></div>
+
+  <!-- Your login.js script -->
+  <script>
+    function login() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          // Login successful, access user information from userCredential.user
+          console.log('Login successful:', userCredential.user);
+          showNotification('Login successful!', true);
+
+          // Redirect to the next link upon successful login
+          window.location.href = 'next_page.html'; // Replace with the desired link
+        })
+        .catch((error) => {
+          // Handle login error
+          console.error('Login failed:', error.message);
+          showNotification('Login failed. Please check your email and password.', false);
+        });
+    }
+
+    function showNotification(message, success) {
+      const notification = document.getElementById('notification');
+      notification.textContent = message;
+      notification.style.backgroundColor = success ? '#4CAF50' : '#ff5252';
+
+      notification.style.display = 'block';
+
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, 3000); // Hide the notification after 3 seconds
+    }
+  </script>
+</body>
+</html>

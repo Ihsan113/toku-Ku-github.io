@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-firestore.js"></script>
+
+  <!-- Firebase configuration -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDPp8I8Xp-qZg65GxEX8_ETxvrZCDG8454",
+      authDomain: "bisnis-532f5.firebaseapp.com",
+      projectId: "bisnis-532f5",
+      storageBucket: "bisnis-532f5.appspot.com",
+      messagingSenderId: "351800625123",
+      appId: "1:351800625123:web:8abff984b15be7a00bc2d6",
+      measurementId: "G-TJJBQ9TF7S"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
+  <!-- Gaya CSS -->
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    form {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      background-color: #0b7484de;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .success-message {
+      color: green;
+      text-align: center;
+    }
+  
+  
+    #notification {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      text-align: center;
+      padding: 10px;
+      z-index: 999;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Form Signup -->
+  <form id="signupForm">
+    <h2>Signup</h2>
+
+    <label for="name">Nama:</label>
+    <input type="text" id="name" required>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" required>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" required>
+
+    <button type="button" onclick="signup()">Signup</button>
+    <hr>
+ <p>sudah punya akun ? klik untuk login <a href="login.html">Login</a></p>
+    <!-- Success message -->
+    <p class="success-message" id="successMessage"></p>
+
+    <!-- Notification for signup status -->
+    <div id="notification"></div>
+  </form>
+
+  <!-- Your signup.js script -->
+  <script>
+    function signup() {
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const successMessage = document.getElementById('successMessage');
+      const notification = document.getElementById('notification');
+
+      // Check if any field is empty
+      if (!name || !email || !password) {
+        showNotification('Semua input harus diisi', false);
+        return;
+      }
+
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          // Signup successful, tampilkan pesan dan arahkan ke halaman login
+          successMessage.textContent = 'Akun berhasil dibuat. Anda akan diarahkan ke halaman login.';
+          setTimeout(() => {
+            window.location.href = 'login.html'; // Ganti dengan halaman login yang sebenarnya
+          }, 3000); // Tunggu 3 detik sebelum mengarahkan ke halaman login
+        })
+        .catch((error) => {
+          // Tangani error saat signup
+          console.error('Signup gagal:', error.message);
+          showNotification('Signup failed. Email may already be registered.', false);
+        });
+    }
+
+    function showNotification(message, success) {
+      const notification = document.getElementById('notification');
+      notification.textContent = message;
+      notification.style.backgroundColor = success ? '#4CAF50' : '#ff5252';
+
+      notification.style.display = 'block';
+
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, 3000); // Hide the notification after 3 seconds
+    }
+  </script>
+</body>
+</html>
