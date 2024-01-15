@@ -81,8 +81,8 @@
       const container = document.getElementById('receipts-container');
       let receiptCounter = 0;
 
-      // Ambil data pesanan dari Firestore
-      db.collection('pemesanan').get()
+      // Ambil data pesanan dari Firestore, disortir berdasarkan timestamp secara descending
+      db.collection('pemesanan').orderBy('timestamp', 'desc').get()
         .then(snapshot => {
           snapshot.forEach(doc => {
             const pesanan = doc.data();
@@ -105,27 +105,31 @@
                 <table>
                   <tr>
                     <td>Nama Pemesan:</td>
-                    <td>${pesanan.namaPemesan}</td>
+                    <td>${pesanan.namaPemesan} <hr></td>
+                   
                   </tr>
                   <tr>
                     <td>Alamat:</td>
-                    <td>${pesanan.alamat.rt_rw}, ${pesanan.alamat.desa}, ${pesanan.alamat.kecamatan}, ${pesanan.alamat.kabupaten}, ${pesanan.alamat.provinsi}, ${pesanan.alamat.negara}</td>
+                    <td>
+                      KODE POS:(${pesanan.alamat.kodepos}),
+                      RT:${pesanan.alamat.rt_rw},
+                      RW:${pesanan.alamat.rw}, ${pesanan.alamat.desa}, ${pesanan.alamat.kecamatan}, ${pesanan.alamat.kabupaten}, ${pesanan.alamat.provinsi}, ${pesanan.alamat.negara} <hr></td>
                   </tr>
                   <tr>
                     <td>Metode Pembayaran:</td>
-                    <td>${pesanan.metodePembayaran}</td>
+                    <td>${pesanan.metodePembayaran} <hr></td>
                   </tr>
                   <tr>
                     <td>Waktu Pesanan:</td>
-                    <td>${waktuPesananValue}</td>
+                    <td>${waktuPesananValue} <hr></td>
                   </tr>
                   <tr>
                     <td>Daftar Barang:</td>
-                    <td>${daftarBarangValue}</td>
+                    <td>${daftarBarangValue} <hr></td>
                   </tr>
                   <tr>
                     <td>Total Harga:</td>
-                    <td>${pesanan.totalHarga}</td>
+                    <td>${pesanan.totalHarga} <hr></td>
                   </tr>
                 </table>
               </div>
@@ -133,8 +137,8 @@
               <div class="delete-button" onclick="deleteReceipt('${doc.id}')"><i class="fas fa-trash"></i> Hapus Struk</div>
             `;
 
-            // Append the new receipt container to the main container
-            container.appendChild(strukContainer);
+            // Use 'prepend' to add the new receipt container at the beginning of the container
+            container.prepend(strukContainer);
           });
         })
         .catch(error => {
@@ -157,6 +161,5 @@
   </script>
 
   <div id="receipts-container"></div>
-
 </body>
 </html>
