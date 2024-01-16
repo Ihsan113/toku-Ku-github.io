@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>    
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-firestore.js"></script>
+  <!-- Add other Firebase scripts if needed -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pengaturan</title>
+  <link rel="stylesheet" href="path/to/your/styles.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0px;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    #backButton {
+      background-color: #3498db;
+      color: #fff;
+      padding: 8px 12px;
+      border: none;
+      font-size: 16px;
+      border-radius: 5px;
+      margin-right: 10px;
+      cursor: pointer;
+      margin-right: 30px;
+    }
+
+    #backButton:hover {
+      background-color: #2980b9;
+    }
+
+    #settingsContent {
+      margin-top: 80px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    #saveChangesButton {
+      background-color: #4caf50;
+      color: #fff;
+      padding: 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #saveChangesButton:hover {
+      background-color: #45a049;
+    }
+    
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Pengaturan</h1>
+    <button id="backButton" onclick="goBack()">
+      <i class="fas fa-arrow-left"></i> Kembali
+    </button>
+  </header>
+
+  <div id="settingsContent">
+    <div id="currentUsername"></div>
+    <br>
+    <hr>
+    <!-- Elemen UI untuk mengubah sandi -->
+    <label for="currentPassword">Sandi Saat Ini:</label>
+    <input type="password" id="currentPassword" placeholder="Masukkan sandi saat ini">
+    <label for="newPassword">Sandi Baru:</label>
+    <input type="password" id="newPassword" placeholder="Masukkan sandi baru">
+
+    <!-- Elemen UI untuk mengubah nama pengguna -->
+    <label for="newUsername">Nama Pengguna Baru:</label>
+    <input type="text" id="newUsername" placeholder="Masukkan nama pengguna baru">
+
+    <!-- Tombol untuk menyimpan perubahan -->
+    <button id="saveChangesButton" onclick="saveChanges()">Simpan Perubahan</button>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDPp8I8Xp-qZg65GxEX8_ETxvrZCDG8454",
+      authDomain: "bisnis-532f5.firebaseapp.com",
+      projectId: "bisnis-532f5",
+      storageBucket: "bisnis-532f5.appspot.com",
+      messagingSenderId: "351800625123",
+      appId: "1:351800625123:web:8abff984b15be7a00bc2d6",
+      measurementId: "G-TJJBQ9TF7S"
+    };
+    
+    // Check if Firebase is already initialized
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
+    const firestore = firebase.firestore();
+
+    // Fungsi untuk kembali ke halaman sebelumnya
+    function goBack() {
+      window.history.back();
+    }
+
+    // Fungsi untuk menyimpan perubahan (tambahkan logika sesuai kebutuhan)
+    function saveChanges() {
+      const currentPasswordInput = document.getElementById('currentPassword');
+      const newPasswordInput = document.getElementById('newPassword');
+      const newUsernameInput = document.getElementById('newUsername');
+
+      const currentPassword = currentPasswordInput.value;
+      const newPassword = newPasswordInput.value;
+      const newUsername = newUsernameInput.value;
+
+      const user = firebase.auth().currentUser;
+      const credential = firebase.auth.EmailAuthProvider.credential(user.email, currentPassword);
+
+      // Reautentikasi pengguna
+      user.reauthenticateWithCredential(credential).then(() => {
+        // Perbarui nama pengguna jika ada perubahan
+        if (newUsername && newUsername !== user.displayName) {
+          user.updateProfile({
+            displayName: newUsername
+          })
+          .then(() => {
+            console.log('Nama pengguna berhasil diperbarui');
+          })
+          .catch((error) => {
+            console.error('Error updating username:', error);
+          });
+        }
+
+        // Perbarui sandi jika ada perubahan
+        if (newPassword) {
+          user.updatePassword(newPassword)
+            .then(() => {
+              console.log('Sandi berhasil diperbarui');
+            })
+            .catch((error) => {
+              console.error('Error updating password:', error);
+            });
+        }
+      }).catch((error) => {
+        console.error('Error reauthenticating user:', error);
+      });
+    }
+
+    // Mengecek status masuk pengguna secara terus-menerus
+    firebase.auth().onAuthStateChanged(function(user) {
+      const currentUsernameElement = document.getElementById('currentUsername');
+
+      if (user) {
+        currentUsernameElement.textContent = `Nama Pengguna: ${user.displayName || 'Belum diatur'}`;
+      } else {
+        // Redirect to the login page if the user is not authenticated
+        window.location.href = 'profile.html';
+      }
+    });
+  </script>
+</body>
+</html>
