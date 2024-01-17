@@ -12,4 +12,3 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
-const redirectUrl = 'halaman-lain.html'; // Langsung mengarahkan ke halaman lain window.location.href = redirectUrl;
