@@ -1,0 +1,2 @@
+User-agent: *
+Disallow: Admin/firebase-config.js
