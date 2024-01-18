@@ -94,10 +94,7 @@ width: 100%;
   background-color: #3498db; /* Ganti warna latar belakang header */
 }
 
-#verificationStatus {
-  margin-right: 10px; 
-   color: #fff;
-}
+
   </style>
 </head>
 <body>
@@ -105,11 +102,10 @@ width: 100%;
     <div id="userSection">
       <div id="userProfilePictureContainer">
         <img id="userProfilePicture" alt="Foto Profil"/>
-        
       </div>
       <span id="userName" style="margin-left: 5px;"></span>
     </div>
-    <div id="verificationStatus"></div>
+    
   </header>
 
   <center>
@@ -119,33 +115,21 @@ width: 100%;
   <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
-  
-<script src="https://kosred.com/a/klttyp.js"></script> 
+<script src="firebase-config.js"></script> 
   <script>
     
-
     let currentUser;
 
     auth.onAuthStateChanged(user => {
-  if (user) {
-    currentUser = user;
-    document.getElementById('userProfilePicture').src = user.photoURL || 'URL_DEFAULT_FOTO_PROFIL';
-    document.getElementById('userName').textContent = user.displayName || 'Nama Pengguna';
-
-    const verificationStatusElement = document.getElementById('verificationStatus');
-    verificationStatusElement.textContent = user.emailVerified ? 'Akun Terverifikasi' : 'Akun Belum Terverifikasi';
-
-    if (!user.emailVerified) {
-      // Jika akun belum terverifikasi, arahkan ke halaman index.html
-      window.location.href = 'https://bit.ly/3tK6lrt';
-    }
-
-    loadData();
-  } else {
-    // Redirect atau lakukan sesuatu jika pengguna tidak masuk
-  }
-});
-    
+      if (user) {
+        currentUser = user;
+        document.getElementById('userProfilePicture').src = user.photoURL || 'URL_DEFAULT_FOTO_PROFIL';
+        document.getElementById('userName').textContent = user.displayName || 'Nama Pengguna';
+        loadData(); // Call the function to fetch and display order data
+      } else {
+        // Redirect or do something if the user is not logged in
+      }
+    });
 
     function loadData() {
       const container = document.getElementById('receipts-container');

