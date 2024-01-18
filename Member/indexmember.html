@@ -226,8 +226,8 @@
 <body>
   <header>
     <div class="login-signup">
-      <a href="Akun/login.html">Login</a>
-      <a href="Akun/signup.html">Signup</a>
+      <a href="https://tokokita-seven.vercel.app/Akun/login.html">Login</a>
+      <a href="https://tokokita-seven.vercel.app/Akun/signup.html">Signup</a>
     </div>
    <br>
 <div style="display: flex; align-items: center;">
@@ -274,9 +274,8 @@
   </div>
   
   <main>
-      <h2>Konsumen</h2>
+       <h2>Member</h2>
     <section class="produk">
-        
       <div class="produk-item">
         <img src="https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTCynsAUaxOViUnFKb10v1YD5i4WLot24c-sbecgnq7tfBX7o0&usqp=CAc" alt="Kopi">
         <h3>Kopi 7 Elemen</h3>
@@ -432,11 +431,6 @@ firebase.auth().onAuthStateChanged(function(user) {
         if (doc.exists) {
           const userStatus = doc.data().status || 'Konsumen';
           userStatusElement.textContent = `Status: ${userStatus}`;
-
-          // Add your redirection logic here
-          if (userStatus === 'member') {
-            window.location.href = 'Member/indexmember.html'; // Replace 'member.html' with your actual member page URL
-          }
         }
       })
       .catch((error) => {
