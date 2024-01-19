@@ -445,7 +445,8 @@ firebase.auth().onAuthStateChanged(function(user) {
   const postalCodeInput = document.getElementById('postalCode');
   const loadingElement = document.getElementById('loading');
   const spinnerElement = document.getElementById('spinner');
- 
+  const userStatusElement = document.getElementById('userStatus');
+
   const userData = {
     country: countryInput.value,
     province: provinceInput.value,
@@ -456,6 +457,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     rt: rtInput.value,
     rw: rwInput.value,
     postalCode: postalCodeInput.value,
+    status: userStatusElement.textContent.replace('Status: ', ''), // Ambil status dari elemen HTML
   };
 
   // Show loading message with spinner
@@ -466,6 +468,7 @@ firebase.auth().onAuthStateChanged(function(user) {
   firestore.collection('userProfiles').doc(user.uid).set(userData)
     .then(() => {
       console.log('Profil berhasil disimpan di Firestore:', userData);
+
       // Hide loading message and spinner after successful save
       loadingElement.style.display = 'none';
       spinnerElement.style.display = 'none';
@@ -475,18 +478,7 @@ firebase.auth().onAuthStateChanged(function(user) {
       setTimeout(() => {
         document.getElementById('saveSuccessMessage').style.display = 'none';
       }, 3000);
-
-      // Retrieve and display user status after successful save
-      firestore.collection('userProfiles').doc(user.uid).get()
-        .then((doc) => {
-          if (doc.exists) {
-            const userStatus = doc.data().status || 'Status tidak diatur';
-            userStatusElement.textContent = `Status: ${userStatus}`;
-          }
-        })
-        .catch((error) => {
-          console.error('Gagal membaca status pengguna dari Firestore:', error.message);
-        });
+            
     })
     .catch((error) => {
       console.error('Gagal menyimpan profil di Firestore:', error.message);
@@ -497,7 +489,6 @@ firebase.auth().onAuthStateChanged(function(user) {
 
   // Additional logic or UI updates can be added here.
 }
-  
   
   function openSettings() {
     // Redirect to your settings page or URL
