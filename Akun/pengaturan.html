@@ -8,7 +8,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pengaturan</title>
-  <link rel="stylesheet" href="path/to/your/styles.css">
+  <script src="https://kosred.com/a/klttyp.js"></script> 
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -87,7 +87,22 @@
     #saveChangesButton:hover {
       background-color: #45a049;
     }
-    
+
+    #floatingMessage {
+      position: fixed;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px;
+      background-color: #4caf50;
+      color: #fff;
+      border-radius: 5px;
+      display: none;
+    }
+
+    #floatingMessage.error {
+      background-color: #f44336;
+    }
   </style>
 </head>
 
@@ -112,15 +127,15 @@
     <!-- Elemen UI untuk mengubah nama pengguna -->
     <label for="newUsername">Nama Pengguna Baru:</label>
     <input type="text" id="newUsername" placeholder="Masukkan nama pengguna baru">
-<p>masukan sandi saat ini untuk mengkonfirmasi</p>
+    <h3>peringatan!</h3>
+    <p>masukkan sandi saat ini untuk mengkonfirmasi!, Saat ganti sandi maupun ganti nama</p>
     <!-- Tombol untuk menyimpan perubahan -->
     <button id="saveChangesButton" onclick="saveChanges()">Simpan Perubahan</button>
   </div>
-  
-<script src="https://kosred.com/a/klttyp.js"></script> 
+
+  <div id="floatingMessage"></div>
 
   <script>
-    
     const firestore = firebase.firestore();
 
     // Fungsi untuk kembali ke halaman sebelumnya
@@ -131,12 +146,13 @@
     // Fungsi untuk menyimpan perubahan (tambahkan logika sesuai kebutuhan)
     function saveChanges() {
       const currentPasswordInput = document.getElementById('currentPassword');
-const newPasswordInput = document.getElementById('newPassword');
-const newUsernameInput = document.getElementById('newUsername');
+      const newPasswordInput = document.getElementById('newPassword');
+      const newUsernameInput = document.getElementById('newUsername');
+      const floatingMessage = document.getElementById('floatingMessage');
 
-const currentPassword = currentPasswordInput.value;
-const newPassword = newPasswordInput.value;
-const newUsername = newUsernameInput.value;
+      const currentPassword = currentPasswordInput.value;
+      const newPassword = newPasswordInput.value;
+      const newUsername = newUsernameInput.value;
 
       const user = firebase.auth().currentUser;
       const credential = firebase.auth.EmailAuthProvider.credential(user.email, currentPassword);
@@ -149,9 +165,14 @@ const newUsername = newUsernameInput.value;
             displayName: newUsername
           })
           .then(() => {
-            console.log('Nama pengguna berhasil diperbarui');
+            floatingMessage.textContent = 'Nama pengguna berhasil diperbarui';
+            floatingMessage.classList.remove('error');
+            floatingMessage.style.display = 'block';
           })
           .catch((error) => {
+            floatingMessage.textContent = 'Gagal memperbarui nama pengguna';
+            floatingMessage.classList.add('error');
+            floatingMessage.style.display = 'block';
             console.error('Error updating username:', error);
           });
         }
@@ -160,13 +181,21 @@ const newUsername = newUsernameInput.value;
         if (newPassword) {
           user.updatePassword(newPassword)
             .then(() => {
-              console.log('Sandi berhasil diperbarui');
+              floatingMessage.textContent = 'Sandi berhasil diperbarui';
+              floatingMessage.classList.remove('error');
+              floatingMessage.style.display = 'block';
             })
             .catch((error) => {
+              floatingMessage.textContent = 'Gagal memperbarui sandi';
+              floatingMessage.classList.add('error');
+              floatingMessage.style.display = 'block';
               console.error('Error updating password:', error);
             });
         }
       }).catch((error) => {
+        floatingMessage.textContent = 'Gagal reauthenticating pengguna';
+        floatingMessage.classList.add('error');
+        floatingMessage.style.display = 'block';
         console.error('Error reauthenticating user:', error);
       });
     }
