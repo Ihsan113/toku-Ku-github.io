@@ -10,8 +10,224 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Toko Kita hni</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+      body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 16px;
+      margin: 0;
+      body {
+  overflow-x: hidden;
   
-  <link rel="stylesheet" href="https://kosred.com/a/pljvcv.css">
+}
+
+    }
+
+    header {
+      background-image: linear-gradient(270deg, #5e6367 0, #415460 25%, #1f4459 50%, #003453 75%, #00264c 100%);
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #fff;
+      padding: 10px;
+      font-size: 18px;
+      margin: 0 10px;
+    }
+
+    .login-signup {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+
+    .login-signup a {
+      color: #fff;
+      text-decoration: none;
+      margin-right: 10px;
+    }
+
+    main {
+      padding: 20px;
+      padding-bottom: 60px;
+      
+    }
+
+    .produk {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .produk-item {
+      flex: 0 1 100%;
+      text-align: center;
+      background-color: #fff;
+      border-radius: 5px;
+      padding: 15px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .produk-item img {
+      width: 100%;
+      max-width: 350px;
+      height: auto;
+      border-radius: 5px;
+    }
+
+    .produk-item h3 {
+      margin-top: 10px;
+      font-size: 1.2em;
+    }
+
+    .produk-item p {
+      margin-top: 10px;
+      color: #555;
+    }
+
+    .produk-item button {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .keranjang {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      padding: 10px;
+      background-color: #333;
+      color: #fff;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .keranjang a {
+      color: #fff;
+      text-decoration: none;
+      display: block;
+    }
+
+    .keranjang i {
+      font-size: 20px;
+      padding-right: 5px;
+    }
+
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      position: block;
+      bottom: 0;
+      width: auto;
+    }
+     #slider-container {
+      width: 95%; /* Adjusted width for better proportion */
+      height: 180px; /* Adjusted height for better proportion */
+      overflow: hidden;
+      position: relative;
+      margin: auto; /* Center the slider horizontally */
+    }
+
+    .slide {
+      display: flex; /* Adjusted to flex for easy slide transition */
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.5s ease; /* Added transition for smooth sliding */
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 15px; /* Added border radius for a curved appearance */
+    }
+
+    .slide-text-container {
+      
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .slide-text {
+      color: #fff;
+      font-size: 0px;
+      margin: 0;
+      width: 100%;
+    }
+
+    .slide.active {
+      transform: translateX(0); /* Initial position */
+    }
+
+    .slide.next {
+      transform: translateX(-100%); /* Sliding to the left */
+    }
+
+    .slide.prev {
+      transform: translateX(100%); /* Sliding to the right */
+    }
+
+    .slide-button {
+      position: absolute;
+      top: 50%;
+      font-size: 0px; /* Adjusted font size for better proportion */
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: #55ffff;
+    }
+
+    #prev {
+      left: 20px;
+    }
+
+    #next {
+      right: 20px;
+    }
+    #userInfoCard {
+  background-color: #cfcfcf45;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+  margin-top: 20px;
+  color: #1d1b1de9;
+  max-width: 250px;
+  margin: 0 auto; /* Add this line to center horizontally */
+  color: white;
+}
+
+#userInfoCard p {
+  margin: 10px 0;
+}
+ #blur {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(5px); /* Efek blur */
+      z-index: 9999;
+    }
+  </style>
  
     
   
@@ -189,13 +405,22 @@ font-weight: bold; color: #2c3030;">Kopi 7 Elemen - <i>wilayah 3(100/25)</i></p>
   </footer>
   
 <script src="https://kosred.com/a/klttyp.js"></script> 
-  <script src="https://kosred.com/a/jeyazq.js"></script>
+  
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    // Menampilkan elemen blur saat halaman dimuat
+    document.getElementById('blur').style.display = 'block';
 
+    // ... (skrip yang ada di dalam fungsi ini)
+
+    // Mengubah gaya elemen blur menjadi none setelah beberapa detik
+    setTimeout(function () {
+        document.getElementById('blur').style.display = 'none';
+    }, 3000); // Ubah angka 2000 menjadi durasi yang diinginkan dalam milidetik
+});    
+</script>
+<script src="https://kosred.com/a/kdmxlu.js">
+    
+</script>
 </body>
 </html>
-
-
-  
-  
-
- 
