@@ -160,9 +160,78 @@ background-color: #aaf4ff34;
 #userInfoCard p {
   margin: 10px 0;
 }
+
+
+  
+ 
+ .button-card {
+    display: inline-block;
+    margin: 7px;
+    padding: 10px;
+    border: 1px solid #111111;
+    border-radius: 5px;
+    cursor: pointer;
+}
+    /* Gaya CSS untuk pop-up */
+   .popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    background-color: #fffffff0;
+    padding: 5px;  /* Mengurangi padding agar lebih kompak */
+    width: 250px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    opacity: 0; /* Menyembunyikan awalnya */
+    transition: opacity 0.3s ease-in-out;
+}
+
+.popup-content {
+    text-align: center;
+}
+
+/* Animasi muncul */
+.popup.active {
+    display: block;
+    opacity: 1;
+}
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      font-size: 25px;
+    }
+
   </style>
-</head>
-<body>
+</head>    
+    <body>
+  <!-- ... (code sebelumnya) ... -->
+
+  <!-- Pop-up info keuntungan member -->
+  <div id="infoPopup" class="popup">
+    <div class="popup-content">
+      <span class="close" onclick="closePopup()">
+      ×</span>
+      <h2>Keuntungan jadi Member</h2>
+      <hr>
+      <p>   1. Harga produk akan lebih murah dari harga konsumen.<br>
+            2. biaya ongkir di potong 15%
+            <br>
+            3. Akan mendapatkan kartu Agen hni 
+            <br>
+            4. Akan mendapatkan poin setiap pembelian <br>
+            <hr>
+    info lebih lanjut hubungi, wa kami: 083174042483
+      </p>
+    </div>
+  </div>
+
+  <!-- ... (code setelahnya) ... -->
+</body>
     
      <header>
    <div style="display: flex; align-items: center;">
@@ -171,8 +240,14 @@ background-color: #aaf4ff34;
   </div>
   <h1 style="margin-left: 5px;">Toko bu Eti</h1>
 </div>
-    <button id="settingsButton" onclick="openSettings()">
-      <i class="fas fa-cogs"></i>
+  
+  <!-- ... (code sebelumnya) ... -->
+  <button id="settingsButton" onclick="openSettings()">
+    <i class="fas fa-cogs"></i>
+  </button>
+  
+ 
+</header>
   </header>
 
   
@@ -193,8 +268,17 @@ background-color: #aaf4ff34;
     <div id="userInfoCard">
   <p id="userName"></p>
   <p id="userStatus"></p>
-  <p id="userEmail"></p>
+  <p id="userEmail"></p>   
 </div>
+
+<div class="button-card" onclick="registerForMember()">
+    Daftar Member
+</div>
+<div class="button-card" onclick="showMemberInfo()">
+    Keuntungan member 
+    <i class="fas fa-info-circle"></i>
+</div>
+
 
     <div id="profileForm">
       <label for="country">Negara:</label>
@@ -421,7 +505,26 @@ firebase.auth().onAuthStateChanged(function(user) {
     window.location.href = 'pengaturan.html';
   }
 
-    
+    function registerForMember() {
+  const phoneNumber = 'NomorWhatsAppAnda'; // Ganti dengan nomor WhatsApp Anda
+  const message = encodeURIComponent('Halo ka, saya mau daftar jadi member. boleh tau persyaratannya Terimakasih.?');
+
+  // URL format WhatsApp dengan nomor dan pesan
+  const whatsappURL = `https://wa.me/${6283174042483}?text=${message}`;
+
+  // Buka link WhatsApp
+  window.open(whatsappURL, '_blank');
+}
+
+// Fungsi untuk menampilkan pop-up
+function showMemberInfo() {
+    document.getElementById('infoPopup').classList.add('active');
+}
+
+// Fungsi untuk menutup pop-up
+function closePopup() {
+    document.getElementById('infoPopup').classList.remove('active');
+}
   </script>
 </body>
 </html>
