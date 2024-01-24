@@ -71,6 +71,9 @@
       display: grid;
       gap: 10px;
       grid-template-columns: repeat(2, 1fr);
+      max-width: 380px;
+      margin: 0 auto;
+      margin-top: 45px;
     }
 
     #profileForm input,
@@ -160,7 +163,8 @@
   color: #ffffff;
   position: relative;
   font-size: 20px;
-  max-width: 350px
+  max-width: 350px;
+  margin: 0 auto; /* Untuk membuat card tetap di tengah */
 }
 
 #userInfoCard::before {
@@ -174,9 +178,6 @@
   border-radius: 8px;
 }
 
-
-
-
 #userInfoCard p {
   margin: 10px 0;
 }
@@ -186,11 +187,12 @@
  
  .button-card {
     display: inline-block;
-    margin: 7px;
+    margin: 5px;
     padding: 10px;
     border: 1px solid #111111;
     border-radius: 5px;
     cursor: pointer;
+    margin-top: 25px;
 }
     /* Gaya CSS untuk pop-up */
    .popup {
