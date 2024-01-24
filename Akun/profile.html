@@ -147,15 +147,35 @@
       background-color: #2980b9;
     }
 
-   #userInfoCard {
-background-color: #aaf4ff34;
+#userInfoCard {
+  background-image: url('https://i.ibb.co/S3dgDF9/20240124-172309-0000.png');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
   text-align: center;
   margin-top: 20px;
-  color: #1d1b1de9;
+  color: #ffffff;
+  position: relative;
+  font-size: 20px;
+  max-width: 350px
 }
+
+#userInfoCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4); /* Sesuaikan tingkat transparansi jika perlu */
+  border-radius: 8px;
+}
+
+
+
 
 #userInfoCard p {
   margin: 10px 0;
