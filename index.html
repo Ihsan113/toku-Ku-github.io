@@ -15,6 +15,95 @@
 
 <link rel="stylesheet" href="https://kosred.com/a/qhmhhm.css">
 
+<style>
+    
+    .floating-button {
+  position: fixed;
+  top: 25%;
+  left: 10px;
+  color: #0d9a2fc0;
+  border: none;  
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  font-size: 24px;
+  
+  align-items: center;
+  animation: pulse 2s infinite;
+}
+
+
+.option{
+    font-size: 12px;
+}
+
+.floating-button::before {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #ff0000; /* Warna titik indikator denyut */
+  border-radius: 50%;
+  
+  top: 30%;
+  left: 80%;
+  transform: translate(-50%, -50%);
+  opacity: 0; /* Mulai dengan keadaan tidak terlihat */
+  animation: pulse-dot 2s infinite;
+  animation-delay: 1s; /* Delay untuk mulai animasi titik */
+}
+
+.options {
+  display: none;
+  position: absolute;
+  top: 0px;
+  left: 40px;
+  background-color: #aadffff3;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100px;
+  border-radius: 12px;
+}
+
+.option {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.option:hover {
+  background-color: #f0f0f0;
+}
+
+
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(52, 152, 219, 0.9);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.7);
+  }
+}
+
+@keyframes pulse-dot {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0.3;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.7;
+  }
+}
+  
+</style>
   
 </head>
 <body>
@@ -192,10 +281,59 @@ font-weight: bold; color: #2c3030;">Kopi 7 Elemen - <i>wilayah 3(100/25)</i></p>
     <p>&copy; 2024 Toko halal mart Suesti</p>
   </footer>
    
+   
+   <!-- fitu 1-->
+    <div class="floating-button" id="floatingButton">
+    <i class="fas fa-store store-icon"></i> <!-- Icon store from Font Awesome -->
+    <center>
+    <div class="options" id="options">
+       
+     <a href="#" style="color: black; font-size: 15px; text-decoration: none;">
+  <div class="option">
+    <i class="fas fa-store store-icon"></i>Produk makanan.
+    
+  </div>
+</a>
+    </div>
+  </div>
+  </center>
+  <!-- fitur 1-->
   <script src="https://kosred.com/a/klttyp.js"></script> 
   <script src="https://kosred.com/a/prfgmj.js"></script>
       
   
+<script>
+    <!-- fitur 1-->
+    document.addEventListener('DOMContentLoaded', function () {
+      const floatingButton = document.getElementById('floatingButton');
+      const options = document.getElementById('options');
 
+      floatingButton.addEventListener('click', function () {
+        options.style.display = options.style.display === 'none' ? 'block' : 'none';
+      });
+
+      options.addEventListener('click', function (event) {
+        // Handle option click events here
+        const selectedOption = event.target.textContent;
+        console.log('Selected option:', selectedOption);
+
+        // Add logic for each option
+        if (selectedOption === 'Toko Jajanan Sementara') {
+          // Add your specific logic for this option
+          console.log('Redirect to Toko Jajanan Sementara page.');
+        } else if (selectedOption === 'Option 1') {
+          // Add your specific logic for Option 1
+          console.log('Perform action for Option 1.');
+        } else if (selectedOption === 'Option 2') {
+          // Add your specific logic for Option 2
+          console.log('Perform action for Option 2.');
+        } else if (selectedOption === 'Option 3') {
+          // Add your specific logic for Option 3
+          console.log('Perform action for Option 3.');
+        }
+      });
+    });
+    <!-- fitur 1-->
+</script>
 </body>
 </html>
