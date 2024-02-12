@@ -148,7 +148,7 @@
       </div>
     </div>
     <div class="slide">
-      <img src="https://lh3.googleusercontent.com/p/AF1QipMvYwiQx0SwJvOqA2Nx6g06GjyCCN-2u14vilUc=w1080-h608-p-no-v0" alt="Gambar 2">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSin3OZ5Wq7A_O1L3TruZ1b-S9B92Vjr5roUQ&usqp=CAU" alt="Gambar 2">
       <div class="slide-text-container">
         <p class="slide-text"></p>
       </div>
@@ -277,6 +277,8 @@ font-weight: bold; color: #2c3030;">Kopi 7 Elemen - <i>wilayah 3(100/25)</i></p>
       </a>
     </section>
   </main>
+  <img src="https://i.ibb.co/vBsQTRb/Shopping-bag-pana.png" alt="Shopping Bag" width="100" height="100">
+      
   <footer>
     <p>&copy; 2024 Toko halal mart Suesti</p>
   </footer>
@@ -290,7 +292,7 @@ font-weight: bold; color: #2c3030;">Kopi 7 Elemen - <i>wilayah 3(100/25)</i></p>
        
      <a href="#" style="color: black; font-size: 15px; text-decoration: none;">
   <div class="option">
-    <i class="fas fa-store store-icon"></i>Produk makanan.
+    <i class="fas fa-store store-icon"></i>Perhatian!<hr><p>Toko kami buka jam 08.00-21.30 malam</p>
     
   </div>
 </a>
@@ -306,34 +308,23 @@ font-weight: bold; color: #2c3030;">Kopi 7 Elemen - <i>wilayah 3(100/25)</i></p>
 <script>
     <!-- fitur 1-->
     document.addEventListener('DOMContentLoaded', function () {
-      const floatingButton = document.getElementById('floatingButton');
-      const options = document.getElementById('options');
+  const floatingButton = document.getElementById('floatingButton');
+  const options = document.getElementById('options');
+  let optionsActive = false;
 
-      floatingButton.addEventListener('click', function () {
-        options.style.display = options.style.display === 'none' ? 'block' : 'none';
-      });
+  floatingButton.addEventListener('click', function () {
+    if (!optionsActive) {
+      options.style.display = 'block';
+      optionsActive = true;
+    } else {
+      options.style.display = 'none';
+      optionsActive = false;
+    }
+  });
+  });
+  
 
-      options.addEventListener('click', function (event) {
-        // Handle option click events here
-        const selectedOption = event.target.textContent;
-        console.log('Selected option:', selectedOption);
-
-        // Add logic for each option
-        if (selectedOption === 'Toko Jajanan Sementara') {
-          // Add your specific logic for this option
-          console.log('Redirect to Toko Jajanan Sementara page.');
-        } else if (selectedOption === 'Option 1') {
-          // Add your specific logic for Option 1
-          console.log('Perform action for Option 1.');
-        } else if (selectedOption === 'Option 2') {
-          // Add your specific logic for Option 2
-          console.log('Perform action for Option 2.');
-        } else if (selectedOption === 'Option 3') {
-          // Add your specific logic for Option 3
-          console.log('Perform action for Option 3.');
-        }
-      });
-    });
+  
     <!-- fitur 1-->
 </script>
 </body>
